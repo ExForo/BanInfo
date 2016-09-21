@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="exile_baninfo" title="[Exile] Причина бана пользователя" version_string="1.0.0" version_id="100" url="https://xenforo.info/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="load_class_controller" execute_order="10" callback_class="Exile_BanInfo_Listener" callback_method="extendMemberController" active="1" hint="XenForo_ControllerPublic_Member" description="Extend member view"/>
+    <listener event_id="load_class_model" execute_order="10" callback_class="Exile_BanInfo_Listener" callback_method="extendUserProfileModel" active="1" hint="XenForo_Model_UserProfile" description="Extend user profile model"/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="exile_baninfo_date" version_id="100" version_string="1.0.0"><![CDATA[Дата блокировки]]></phrase>
+    <phrase title="exile_baninfo_explain" version_id="100" version_string="1.0.0"><![CDATA[Если у вас планируется какая-то сделка с его участием, настоятельно рекомендуем ее не производить до окончания блокировки. Если пользователь уже обманул вас каким-либо образом, обратитесь в наш арбитраж, дабы мы могли по возможности урегулировать возникшую у вас проблему.]]></phrase>
+    <phrase title="exile_baninfo_header" version_id="100" version_string="1.0.0"><![CDATA[Пользователь заблокирован]]></phrase>
+    <phrase title="exile_baninfo_reason" version_id="100" version_string="1.0.0"><![CDATA[Причина блокировки]]></phrase>
+  </phrases>
+  <route_prefixes/>
+  <style_properties/>
+  <templates/>
+  <public_template_modifications>
+    <modification template="member_view" modification_key="exile_baninfo_member_view" description="Добавляем информацию о блокировке в профиль пользователя" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<div class="section primaryUserBlock">]]></find>
+      <replace><![CDATA[<xen:if is="{$user.is_banned}">
+<div class="errorPanel" style="margin: 0px !important;">
+	<p style="margin-left: 1.5em;" class="errorHeading">{xen:phrase exile_baninfo_header}</p>
+	<p class="errors">{xen:phrase exile_baninfo_explain}</p>
+	<p class="errors"><b>{xen:phrase exile_baninfo_date}</b>: {xen:date $user.ban_date}<br />
+	<b>{xen:phrase exile_baninfo_reason}</b>: {$user.ban_reason}<br />
+	<xen:if is="{$user.ban_end} == 0">
+		<b>{xen:phrase ban_ends}</b>: {xen:phrase never}
+	<xen:else />
+		<b>{xen:phrase ban_ends}</b>: {xen:datetime $user.ban_end, 'absolute'}
+	</xen:if>
+	</p>
+</div>
+</xen:if>
+$0]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
